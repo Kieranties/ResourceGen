@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kieranties.ResourceGen", "src\Kieranties.ResourceGen\Kieranties.ResourceGen.csproj", "{F6E47D39-0AA1-477D-B32E-DDCE0091762E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CBE2906A-F5A4-44EE-8BC3-59EA911A22C3}"
+	ProjectSection(SolutionItems) = preProject
+		src\Directory.Build.props = src\Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F6031F10-9A22-4034-B1C5-D6789BB212D8}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.simpleversion.json = .simpleversion.json
+		azure-pipelines.yml = azure-pipelines.yml
+		build.ps1 = build.ps1
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		global.json = global.json
+		nuget.config = nuget.config
+		Packages.props = Packages.props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kieranties.ResoruceGen.Tests", "test\Kieranties.ResoruceGen.Tests\Kieranties.ResoruceGen.Tests.csproj", "{48AE4CD5-1A1D-40C1-8626-7919668E5E86}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{768E06E0-3829-4319-B838-BD5FC296A498}"
+	ProjectSection(SolutionItems) = preProject
+		test\Directory.Build.props = test\Directory.Build.props
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F6E47D39-0AA1-477D-B32E-DDCE0091762E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6E47D39-0AA1-477D-B32E-DDCE0091762E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6E47D39-0AA1-477D-B32E-DDCE0091762E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6E47D39-0AA1-477D-B32E-DDCE0091762E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48AE4CD5-1A1D-40C1-8626-7919668E5E86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48AE4CD5-1A1D-40C1-8626-7919668E5E86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48AE4CD5-1A1D-40C1-8626-7919668E5E86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48AE4CD5-1A1D-40C1-8626-7919668E5E86}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F6E47D39-0AA1-477D-B32E-DDCE0091762E} = {CBE2906A-F5A4-44EE-8BC3-59EA911A22C3}
+		{48AE4CD5-1A1D-40C1-8626-7919668E5E86} = {768E06E0-3829-4319-B838-BD5FC296A498}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CEEB1DDA-E5D6-42A0-A34F-2EA0115F93AF}
+	EndGlobalSection
+EndGlobal

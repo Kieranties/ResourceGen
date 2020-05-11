@@ -1,0 +1,38 @@
+<Project>
+
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory)\.., Directory.Build.props))\Directory.Build.props"/>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <!-- Documentation for tests is not needed-->
+    <NoWarn>$(NoWarn);SA0001</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Coverage">
+    <CollectCoverage>true</CollectCoverage>
+    <VSTestLogger>trx</VSTestLogger>
+    <VSTestCollect>XPlat Code Coverage</VSTestCollect>
+  </PropertyGroup>
+
+  <ItemGroup Label="Coverage">
+    <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="NSubstitute" />
+    <PackageReference Include="coverlet.msbuild" />
+    <PackageReference Include="coverlet.collector" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\shared\Tests.GlobalSuppressions.cs">
+      <Link>GlobalSuppressions.cs</Link>
+    </Compile>
+  </ItemGroup>
+
+</Project>

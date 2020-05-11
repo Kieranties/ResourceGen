@@ -1,0 +1,91 @@
+# Build pipeline for Azure Devops
+trigger:
+  branches:
+    include:
+    - master
+    - release/*
+  paths:
+    exclude:
+    - .github/*
+    - README.md
+
+pr:
+- master
+- release/*
+
+variables:
+  TreatWarningsAsErrors: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  Configuration: Release
+  ArtifactsPath: $(Build.ArtifactStagingDirectory)
+  disable.coverage.autogenerate: true
+
+jobs:
+- job: 'build_test_pack'
+  displayName: "Core Build"
+  pool:
+    vmImage: windows-latest
+
+  steps:
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'sdk'
+      useGlobalJson: true
+
+  # Build
+  - pwsh: ./build.ps1 -ArtifactsPath $(ArtifactsPath) -Configuration $(Configuration)
+    displayName: 'Build and Test'
+
+  # Publish test results
+  - task: PublishTestResults@2
+    displayName: 'Tests: Publish unit tests'
+    condition: succeededOrFailed()
+    inputs:
+      testRunTitle: Unit Tests
+      testRunner: vstest
+      testResultsFiles: '$(ArtifactsPath)/**/*.trx'
+
+  # Publish coverage
+  - task: PublishCodeCoverageResults@1
+    displayName: "Tests: Publish unit test coverage"
+    condition: succeededOrFailed()
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: '$(ArtifactsPath)/**/*.cobertura.xml'
+      reportDirectory: '$(ArtifactsPath)/tests/coveragereport'
+
+  # Quality check the build
+  - task: BuildQualityChecks@6
+    displayName: 'Checks: Quality'
+    inputs:
+      checkWarnings: true
+      warningFailOption: 'fixed'
+      warningThreshold: '0'
+      showStatistics: true
+      checkCoverage: true
+      coverageFailOption: 'fixed'
+      coverageType: 'branches'
+      coverageThreshold: '15'
+
+  # Handle artifacts
+  - publish: $(ArtifactsPath)/docs/site
+    displayName: "Artifacts: Publish Docs"
+    condition: succeeded()
+    artifact: docs
+
+  - publish: $(ArtifactsPath)/dist
+    displayName: "Artifacts: Publish Dist"
+    condition: succeeded()
+    artifact: dist
+
+  - task: DotNetCoreCLI@2
+    displayName: "Artifacts: Push Packages"
+    condition: and(succeeded(), ne(variables['build.reason'], 'PullRequest'))
+    inputs:
+      command: 'push'
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+      nuGetFeedType: 'internal'
+      publishVstsFeed: 'ResourceGen'
+
+# TODO - Jobs for Integration testing

@@ -1,0 +1,35 @@
+<Project>
+    <!--
+        https://github.com/Microsoft/MSBuildSdks/tree/master/src/CentralPackageVersions
+
+        Centrally managed packages for all projects in the solution
+    -->
+    <PropertyGroup Label="Shared Versions">
+        <_xunit>2.*</_xunit>
+    </PropertyGroup>
+
+    <ItemGroup Label="SourceLibrary packages">
+        <PackageReference Update="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.6.0-3.20207.2" PrivateAssets="all" />
+        <PackageReference Update="Microsoft.CodeAnalysis.Analyzers" Version="3.0.0-beta2.final" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup Label="Test library packages">
+        <PackageReference Update="Microsoft.NET.Test.Sdk" Version="16.*" />
+        <PackageReference Update="xunit" Version="$(_xunit)" />
+        <PackageReference Update="xunit.runner.visualstudio" Version="$(_xunit)" />
+        <PackageReference Update="FluentAssertions" Version="5.*" />
+        <PackageReference Update="GitTools.Testing" Version="1.*" />
+        <PackageReference Update="NSubstitute" Version="4.*" />
+        <PackageReference Update="coverlet.msbuild" Version="2.*" />
+        <PackageReference Update="coverlet.collector" Version="1.*" />
+    </ItemGroup>
+
+    <ItemGroup Label="Global project tooling">
+        <GlobalPackageReference Include="Microsoft.CodeAnalysis.FXCopAnalyzers" Version="3.*" />
+        <GlobalPackageReference Include="StyleCop.Analyzers" Version="1.*" />
+    </ItemGroup>
+
+    <ItemGroup Label="Test only tooling" Condition="$(MSBuildProjectName.EndsWith('Tests'))">
+        <GlobalPackageReference Include="NSubstitute.Analyzers.CSharp" Version="1.*" />
+    </ItemGroup>
+</Project>

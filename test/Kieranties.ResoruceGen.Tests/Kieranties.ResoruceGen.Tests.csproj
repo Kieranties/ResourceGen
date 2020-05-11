@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Kieranties.ResourceGen\Kieranties.ResourceGen.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" />
+    </ItemGroup>
+
+</Project>
