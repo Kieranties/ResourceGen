@@ -1,4 +1,5 @@
 # Build pipeline for Azure Devops
+    
 trigger:
   branches:
     include:
@@ -32,6 +33,8 @@ jobs:
     inputs:
       packageType: 'sdk'
       useGlobalJson: true
+      version: 
+        includePreviewVersions: true
 
   # Build
   - pwsh: ./build.ps1 -ArtifactsPath $(ArtifactsPath) -Configuration $(Configuration)
