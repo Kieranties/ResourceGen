@@ -72,11 +72,6 @@ jobs:
       coverageThreshold: '15'
 
   # Handle artifacts
-  - publish: $(ArtifactsPath)/docs/site
-    displayName: "Artifacts: Publish Docs"
-    condition: succeeded()
-    artifact: docs
-
   - publish: $(ArtifactsPath)/dist
     displayName: "Artifacts: Publish Dist"
     condition: succeeded()
