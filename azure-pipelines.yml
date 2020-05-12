@@ -84,6 +84,6 @@ jobs:
       command: 'push'
       packagesToPush: '$(ArtifactsPath)/**/*.nupkg'
       nuGetFeedType: 'internal'
-      publishVstsFeed: 'ResourceGen'
+      publishVstsFeed: 'Kieranties/ResourceGen'
 
 # TODO - Jobs for Integration testing
