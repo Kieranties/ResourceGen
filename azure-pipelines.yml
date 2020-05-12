@@ -32,8 +32,8 @@ jobs:
   - task: UseDotNet@2
     inputs:
       packageType: 'sdk'
-      useGlobalJson: true
-      includePreviewVersions: true
+      # Preview versions are not collected when specified via useGlobalJson
+      version: 3.1.300-preview-015135
 
   # Build
   - pwsh: ./build.ps1 -ArtifactsPath $(ArtifactsPath) -Configuration $(Configuration)
