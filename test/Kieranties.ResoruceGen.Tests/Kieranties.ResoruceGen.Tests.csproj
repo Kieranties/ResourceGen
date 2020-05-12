@@ -1,4 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+      <Content Include="Expectations\**\*" CopyToOutputDirectory="Always" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Expectations\WithSingleProperty.txt" />
+    </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\..\src\Kieranties.ResourceGen\Kieranties.ResourceGen.csproj" />

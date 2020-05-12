@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Xml;
 using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -29,14 +30,19 @@ namespace Kieranties.ResourceGen
                 throw new ArgumentNullException(nameof(source));
             }
 
-            _propertiesCode = ProcessProperties(source.GetText().ToString());
+            if (string.IsNullOrWhiteSpace(source.Path))
+            {
+                throw new InvalidOperationException(@$"Cannot derive class name from invalid path ""{source.Path}""");
+            }
+
+            _propertiesCode = ProcessProperties(source.GetText()?.ToString());
             ClassName = Path.GetFileNameWithoutExtension(source.Path);
         }
 
         /// <summary>
         /// Gets or sets the namespace for the generated class.
         /// </summary>
-        public string Namespace { get; set; } = "Generated";
+        public string Namespace { get; set; } = $"{nameof(Kieranties)}.GeneratedResource";
 
         /// <summary>
         /// Gets the clas name for the generated class.
@@ -49,8 +55,7 @@ namespace Kieranties.ResourceGen
         /// <returns>The <see cref="SourceText"/> result.</returns>
         public SourceText ToSourceText()
         {
-            var code = $@"
-namespace {Namespace} {{
+            var code = $@"namespace {Namespace} {{
 
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
@@ -93,34 +98,41 @@ namespace {Namespace} {{
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Globalization.CultureInfo Culture {{ get; set; }}
 
-        {_propertiesCode}
-
         /// <summary>
         ///    Returns the resource string for the given key
         /// </summary>
         private static string GetString(string key) => ResourceManager.GetString(key, Culture);
+
+        {_propertiesCode}
     }}
-}}
-";
+}}";
             return SourceText.From(code, Encoding.UTF8);
         }
 
         private static StringBuilder ProcessProperties(string content)
         {
-            var xdoc = XDocument.Parse(content);
-            var dataNodes = xdoc.Descendants("data");
             var builder = new StringBuilder();
-            foreach (var node in dataNodes)
-            {
-                var name = node.Attribute("name").Value;
-                var value = node.Element("value").Value;
 
-                builder.AppendLine($@"
-        /// <summary>
-        /// Looks up a localized string similar to: {value}
+            if (!string.IsNullOrWhiteSpace(content))
+            {
+                var xdoc = XDocument.Parse(content);
+                var dataNodes = xdoc.Descendants("data");
+                foreach (var node in dataNodes)
+                {
+                    var nameAttr = node.Attribute("name") ?? throw new XmlException("'data' nodes must have a 'name' attribute");
+                    var name = nameAttr.Value;
+                    if (string.IsNullOrWhiteSpace(name))
+                    {
+                        throw new InvalidOperationException("Resource name must be a non-empty string");
+                    }
+
+                    var valueElement = node.Element("value") ?? throw new XmlException("'data' nodes must have a 'value' descendant node");
+
+                    builder.Append($@"/// <summary>
+        /// Looks up a localized string similar to: {valueElement.Value}
         /// </summary>
-        internal static string {name} => GetString(nameof({name})); 
-");
+        internal static string {name} => GetString(nameof({name}));");
+                }
             }
 
             return builder;
