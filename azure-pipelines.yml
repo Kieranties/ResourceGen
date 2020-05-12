@@ -82,7 +82,7 @@ jobs:
     condition: and(succeeded(), ne(variables['build.reason'], 'PullRequest'))
     inputs:
       command: 'push'
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+      packagesToPush: '$(ArtifactsPath)/**/*.nupkg'
       nuGetFeedType: 'internal'
       publishVstsFeed: 'ResourceGen'
 
