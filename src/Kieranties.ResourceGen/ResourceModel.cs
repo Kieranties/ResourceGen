@@ -109,6 +109,7 @@ namespace Kieranties.ResourceGen
             return SourceText.From(code, Encoding.UTF8);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "TODO")]
         private static StringBuilder ProcessProperties(string content)
         {
             var builder = new StringBuilder();
